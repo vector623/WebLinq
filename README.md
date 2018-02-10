@@ -22,3 +22,6 @@ method.
 ## todo
 add a console project as a demo and include some mock functions to imitate web requests to the google adwords api and
 the amazon marketplace web service api
+
+## example
+https://gist.github.com/vector623/9f087f253653f1dd08ed793f1c7ec26f
