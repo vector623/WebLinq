@@ -48,5 +48,40 @@ namespace WebLinq
             }
             return result;
         }
+
+        /// <summary>
+        /// A linq method to return adjacent groupings, given a sequence.  Eg invocation:
+        /// GroupAdjacentBy((x, y) => x + 1 == y).  Sourced from stackoverflow: https://stackoverflow.com/a/4682163
+        /// </summary>
+        /// <param name="source">the collection you want grouped</param>
+        /// <param name="predicate">the func used to group the collection</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>the grouped collection</returns>
+        public static IEnumerable<IEnumerable<T>> GroupAdjacentBy<T>(this IEnumerable<T> source,
+            Func<T, T, bool> predicate)
+        {
+            using (var e = source.GetEnumerator())
+            {
+                if (!e.MoveNext()) yield break;
+                var list = new List<T> {e.Current};
+                var pred = e.Current;
+                while (e.MoveNext())
+                {
+                    if (predicate(pred, e.Current))
+                    {
+                        list.Add(e.Current);
+                    }
+                    else
+                    {
+                        yield return list;
+                        list = new List<T> {e.Current};
+                    }
+
+                    pred = e.Current;
+                }
+
+                yield return list;
+            }
+        }
     }
 }
