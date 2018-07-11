@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WebLinq
 {
@@ -82,6 +83,23 @@ namespace WebLinq
 
                 yield return list;
             }
+        }
+
+        public static IEnumerable<IEnumerable<T>> Slice<T>(this IEnumerable<T> source, int sliceSize)
+        {
+            var slices = source
+                .Select((element, index) =>
+                {
+                    var indexedElement = new
+                    {
+                        element,
+                        index
+                    };
+                    return indexedElement;
+                })
+                .GroupBy(indexElement => indexElement.index % sliceSize)
+                .ToList();
+            throw new NotImplementedException();
         }
     }
 }
